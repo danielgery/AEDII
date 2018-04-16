@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -38,10 +39,10 @@ public class Texto {
 		violeta = new HashSet<String>();
 		preto = new HashSet<String>();
 		laranja = new HashSet<String>();
+		ArrayList<Retangulo> retangulos = new ArrayList<Retangulo>();
 
 		Path path = Paths.get(arquivo);
 
-		Retangulos r;
 		GerenciadorRetangulos g1 = new GerenciadorRetangulos();
 		try (BufferedReader br = Files.newBufferedReader(path, Charset.defaultCharset())) {
 			System.out.println("Lendo arquivo");
@@ -50,51 +51,81 @@ public class Texto {
 			while ((linha = br.readLine()) != null) {
 				Scanner scanner = new Scanner(linha);
 				Scanner sc = scanner.useDelimiter(" ");
-
 				int x1 = Integer.parseInt(sc.next());
 				int y1 = Integer.parseInt(sc.next());
 				int x2 = Integer.parseInt(sc.next());
 				int y2 = Integer.parseInt(sc.next());
 				String cor = sc.next().trim();
-
-				// Ver os quadrados e nomina-los
-				// ArrayList<String> quadrados = new ArrayList<>();
-				HashSet<String> quadrados = new HashSet<>();
-				// quantidade
-				int quant = (x2 - x1) * (y2 - y1);
-
-				// nomeando quadrados pela posição
-				for (int i = 0; i < (x2 - x1); i++) {// linha
-					for (int j = 0; j < (y2 - y1); j++) {// coluna
-						quadrados.add(Integer.toString(x1 + i) + "," + Integer.toString(y1 + j) + ","
-								+ Integer.toString(x1 + i + 1) + "," + Integer.toString(y1 + j + 1));
-
-					}
-				}
-
-				removerQuadrados(cor, quadrados);
-
-				// r = new Retangulos(x1, y1, x2, y2, cor);
-				// g1.adicionarRetangulo(r);
+				retangulos.add(new Retangulo(x1, y1, x2, y2, cor));
 
 			}
-			System.out.println("verde-claro:  " + verdeclaro.size());
-			System.out.println("vermelho:     " + vermelho.size());
-			System.out.println("azul-claro:   " + azulclaro.size());
-			System.out.println("amarelo:      " + amarelo.size());
-			System.out.println("verde-escuro: " + verdeescuro.size());
-			System.out.println("marrom:       " + marrom.size());
-			System.out.println("azul-escuro:  " + azulescuro.size());
-			System.out.println("cinza:        " + cinza.size());
-			System.out.println("dourado:      " + dourado.size());
-			System.out.println("violeta:      " + violeta.size());
-			System.out.println("preto:        " + preto.size());
-			System.out.println("laranja:      " + laranja.size());
-
 		} catch (IOException x) {
 			System.out.println("Arquivo não encontrado!");
+		}
+		//Se a lista for de pequenas proporçoes, usa o método Um
+		if (retangulos.size() < 10000) {
+			boolean muitoGrande = false;
+			for (int i = 0; i < retangulos.size(); i++) {
+				System.out.println(i + 1);
+				if (retangulos.get(i).quantidadeQuadrados() > 1000) {
+					muitoGrande = true;
+					break;
+
+				}
+			}
+			System.out.println(muitoGrande);
+			if (!muitoGrande)
+				metodoUm(retangulos);
+		}
+		else {
+			metodoDois(retangulos);
+		}
+
+	}
+
+	private static void metodoDois(ArrayList<Retangulo> retangulos) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void metodoUm(ArrayList<Retangulo> retangulos) {
+		for (int k = 0; k < retangulos.size(); k++) {
+			System.out.println("retangulo " + k);
+
+			// Ver os quadrados e nomina-los
+
+			HashSet<String> quadrados = new HashSet<>();
+
+			// nomeando quadrados pela posição
+			for (int i = 0; i < retangulos.get(k).diferencaX(); i++) {// linha
+				for (int j = 0; j < retangulos.get(k).diferencaY(); j++) {// coluna
+					quadrados.add(Integer.toString(retangulos.get(k).getx1() + i) + ","
+							+ Integer.toString(retangulos.get(k).gety1() + j) + ","
+							+ Integer.toString(retangulos.get(k).getx1() + i + 1) + ","
+							+ Integer.toString(retangulos.get(k).gety1() + j + 1));
+
+				}
+			}
+
+			removerQuadrados(retangulos.get(k).getcor(), quadrados);
+
+			// r = new Retangulos(x1, y1, x2, y2, cor);
+			// g1.adicionarRetangulo(r);
 
 		}
+		System.out.println("verde-claro:  " + verdeclaro.size());
+		System.out.println("vermelho:     " + vermelho.size());
+		System.out.println("azul-claro:   " + azulclaro.size());
+		System.out.println("amarelo:      " + amarelo.size());
+		System.out.println("verde-escuro: " + verdeescuro.size());
+		System.out.println("marrom:       " + marrom.size());
+		System.out.println("azul-escuro:  " + azulescuro.size());
+		System.out.println("cinza:        " + cinza.size());
+		System.out.println("dourado:      " + dourado.size());
+		System.out.println("violeta:      " + violeta.size());
+		System.out.println("preto:        " + preto.size());
+		System.out.println("laranja:      " + laranja.size());
+
 	}
 
 	public static void removerQuadrados(String cor, HashSet<String> quadrados) {

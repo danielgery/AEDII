@@ -1,6 +1,6 @@
 package t1alg2;
 
-public class Retangulos {
+public class Retangulo {
 
 	private int x1;
 	private int y1;
@@ -8,7 +8,7 @@ public class Retangulos {
 	private int y2;
 	private String cor;
 
-	public Retangulos(int x1, int y1, int x2, int y2, String cor) {
+	public Retangulo(int x1, int y1, int x2, int y2, String cor) {
 		this.x1 = x1;
 		this.y1 = y1;
 		this.x2 = x2;
@@ -35,10 +35,22 @@ public class Retangulos {
 	public String getcor() {
 		return cor;
 	}
+	
+	public int quantidadeQuadrados() {
+		return diferencaX() * diferencaY();
+	}
+	
+	public int diferencaX() {
+		return x2 - x1;
+	}
+	
+	public int diferencaY() {
+		return y2 - y1;
+	}
 
 	@Override
 	public String toString() {
-		return "Retangulos [x1=" + x1 + ", y1=" + y1 + ", x2=" + x2 + ", y2=" + y2 + ", cor=" + cor + "]\n";
+		return "Retangulo [x1=" + x1 + ", y1=" + y1 + ", x2=" + x2 + ", y2=" + y2 + ", cor=" + cor + "]\n";
 	}
 
 }
